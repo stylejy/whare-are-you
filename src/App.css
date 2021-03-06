@@ -34,7 +34,7 @@
 	display: block;
 	overflow: auto;
 	width: 100%;
-	height: 90vh;
+	height: 80vh;
 }
 
 #Map-info {
@@ -61,5 +61,41 @@
 	}
 	to {
 		transform: rotate(360deg);
+	}
+}
+
+nav {
+	width: 100%;
+	background-color: #282c34;
+}
+
+nav ul {
+	height: 10vh;
+	list-style-type: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	padding: 0;
+	margin: 0;
+}
+
+nav ul li {
+	display: inline-block;
+	color: white;
+	font-weight: 600;
+	cursor: default;
+}
+
+.Button {
+	cursor: pointer;
+}
+
+@media only screen and (min-height: 550px) {
+	nav ul {
+		height: 5vh;
+	}
+	.App-section {
+		height: 85vh;
 	}
 }

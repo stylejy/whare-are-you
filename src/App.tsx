@@ -40,6 +40,12 @@ function App() {
           <span id="Sub-title"> - Where Are You?</span>
         </h1>
       </header>
+      <nav>
+        <ul>
+          <li className="Button">내 위치 공유</li>
+          <li>위치 확인</li>
+        </ul>
+      </nav>
       <section className="App-section">
         <GoogleMapReact
           bootstrapURLKeys={{ key: 'AIzaSyAY6Oz0_r6sq0iI1Y5i_lVcQulpHaRuiDk' }}
