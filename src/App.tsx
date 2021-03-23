@@ -2,11 +2,17 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import GoogleMapReact from 'google-map-react';
 import Marker from 'react-spinners/PuffLoader';
+import short from 'short-uuid';
 
 const MarkerComponent = ({lat, lng}: {lat: number, lng: number}) => <Marker color={'#4A90E2'} loading={true} size={20} />
 
+const SharingNavComponent = ({isSharingMode}: {isSharingMode: boolean}) => <></>
+const MonitoringNavComponent = ({isMonitoringMode}: {isMonitoringMode: boolean}) => <></>
+
 function App() {
   const [position, setPosition] = useState({lat: 0, lng: 0})
+  const [sharingId, setSharingId] = useState('')
+  const [isSharingMode, setIsSharingMode] = useState(false)
 
   useEffect(() => {
     const mapInfoElement = document.getElementById('Map-info');
@@ -32,6 +38,11 @@ function App() {
     });
   });
 
+  const onClickShareButton = () => {
+    setSharingId(short.generate())
+    setIsSharingMode(true)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -42,8 +53,13 @@ function App() {
       </header>
       <nav>
         <ul>
-          <li className="Button">내 위치 공유</li>
-          <li>위치 확인</li>
+          {!isSharingMode ?
+            <>
+              <li className="Button" onClick={onClickShareButton}>내 위치 공유</li>
+              <li className="Button">위치 확인</li>
+            </>
+            : <li>공유 ID: {sharingId}</li> 
+          }
         </ul>
       </nav>
       <section className="App-section">
