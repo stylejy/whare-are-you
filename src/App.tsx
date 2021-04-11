@@ -6,7 +6,18 @@ import short from 'short-uuid';
 
 const MarkerComponent = ({lat, lng}: {lat: number, lng: number}) => <Marker color={'#4A90E2'} loading={true} size={20} />
 
-const SharingNavComponent = ({isSharingMode}: {isSharingMode: boolean}) => <></>
+const SharingNavComponent = ({isSharingMode, sharingId, buttonHandler}: {isSharingMode: boolean, sharingId: string, buttonHandler: () => void}) => {
+  if (!isSharingMode) {
+    return (
+      <>
+        <li className="Button" onClick={buttonHandler}>내 위치 공유</li>
+        <li className="Button">위치 확인</li>
+      </> 
+    )
+  }
+  return <li>공유 ID: {sharingId}</li>
+}
+
 const MonitoringNavComponent = ({isMonitoringMode}: {isMonitoringMode: boolean}) => <></>
 
 function App() {
@@ -53,13 +64,7 @@ function App() {
       </header>
       <nav>
         <ul>
-          {!isSharingMode ?
-            <>
-              <li className="Button" onClick={onClickShareButton}>내 위치 공유</li>
-              <li className="Button">위치 확인</li>
-            </>
-            : <li>공유 ID: {sharingId}</li> 
-          }
+          {SharingNavComponent({isSharingMode, sharingId, buttonHandler: onClickShareButton})}
         </ul>
       </nav>
       <section className="App-section">
