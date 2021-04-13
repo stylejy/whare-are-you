@@ -6,24 +6,34 @@ import short from 'short-uuid';
 
 const MarkerComponent = ({lat, lng}: {lat: number, lng: number}) => <Marker color={'#4A90E2'} loading={true} size={20} />
 
-const SharingNavComponent = ({isSharingMode, sharingId, buttonHandler}: {isSharingMode: boolean, sharingId: string, buttonHandler: () => void}) => {
-  if (!isSharingMode) {
-    return (
-      <>
-        <li className="Button" onClick={buttonHandler}>내 위치 공유</li>
-        <li className="Button">위치 확인</li>
-      </> 
-    )
-  }
-  return <li>공유 ID: {sharingId}</li>
-}
+const SharingNavComponent = ({sharingId, sharingButtonHandler, cancelButtonHandler}: {sharingId: string, sharingButtonHandler: () => void, cancelButtonHandler: () => void}) => (
+  <>
+    <li>공유 ID: {sharingId}</li>
+    <button onClick={cancelButtonHandler}>공유취소</button>
+  </>
+)
 
-const MonitoringNavComponent = ({isMonitoringMode}: {isMonitoringMode: boolean}) => <></>
+const MonitoringNavComponent = ({monitoringId, cancelButtonHandler}: {monitoringId: string, cancelButtonHandler: () => void}) => {
+  if (monitoringId) {
+
+  }
+  return (
+    <>
+      <li>공유 ID를 입력해주세요: </li>
+      <input></input>
+      <button>모니터 시작</button>
+      <button onClick={cancelButtonHandler}>돌아가기</button>
+    </>
+  )
+}
 
 function App() {
   const [position, setPosition] = useState({lat: 0, lng: 0})
   const [sharingId, setSharingId] = useState('')
+  const [monitoringId, setMonitoringId] = useState('')
   const [isSharingMode, setIsSharingMode] = useState(false)
+  const [isMonitoringMode, setIsMonitoringMode] = useState(false)
+  
 
   useEffect(() => {
     const mapInfoElement = document.getElementById('Map-info');
@@ -54,6 +64,15 @@ function App() {
     setIsSharingMode(true)
   }
 
+  const onClickMonitorButton = () => {
+    setIsMonitoringMode(true)
+  }
+
+  const onClickCancelButton = () => {
+    setIsSharingMode(false);
+    setIsMonitoringMode(false);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -64,7 +83,18 @@ function App() {
       </header>
       <nav>
         <ul>
-          {SharingNavComponent({isSharingMode, sharingId, buttonHandler: onClickShareButton})}
+          {
+            !isSharingMode && !isMonitoringMode ? <>
+              <li className="Button" onClick={onClickShareButton}>내 위치 공유</li>
+              <li className="Button" onClick={onClickMonitorButton}>위치 확인</li>
+            </> : null
+          }
+          {
+            isSharingMode ? SharingNavComponent({sharingId, sharingButtonHandler: onClickShareButton, cancelButtonHandler: onClickCancelButton}) : null
+          }
+          {
+            isMonitoringMode ? MonitoringNavComponent({monitoringId, cancelButtonHandler: onClickCancelButton}) : null
+          }
         </ul>
       </nav>
       <section className="App-section">
