@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import './App.css';
 import GoogleMapReact from 'google-map-react';
 import Marker from 'react-spinners/PuffLoader';
@@ -13,15 +13,20 @@ const SharingNavComponent = ({sharingId, sharingButtonHandler, cancelButtonHandl
   </>
 )
 
-const MonitoringNavComponent = ({monitoringId, cancelButtonHandler}: {monitoringId: string, cancelButtonHandler: () => void}) => {
-  if (monitoringId) {
-
+const MonitoringNavComponent = ({monitoringId, isStarted, inputChangeHandler, startButtonHandler, cancelButtonHandler}: {monitoringId: string, isStarted: boolean, inputChangeHandler: (event: ChangeEvent<HTMLInputElement>) => void, startButtonHandler: () => void, cancelButtonHandler: () => void}) => {
+  if (isStarted && monitoringId) {
+    return (
+      <>
+        <li>공유 ID ( {monitoringId} ) 의 동선을 트래킹 중입니다. </li>
+        <button onClick={cancelButtonHandler}>돌아가기</button>
+      </>
+    )
   }
   return (
     <>
       <li>공유 ID를 입력해주세요: </li>
-      <input></input>
-      <button>모니터 시작</button>
+      <input value={monitoringId} onChange={inputChangeHandler}></input>
+      <button onClick={startButtonHandler}>모니터 시작</button>
       <button onClick={cancelButtonHandler}>돌아가기</button>
     </>
   )
@@ -31,6 +36,7 @@ function App() {
   const [position, setPosition] = useState({lat: 0, lng: 0})
   const [sharingId, setSharingId] = useState('')
   const [monitoringId, setMonitoringId] = useState('')
+  const [isStarted, setIsStarted] = useState(false)
   const [isSharingMode, setIsSharingMode] = useState(false)
   const [isMonitoringMode, setIsMonitoringMode] = useState(false)
   
@@ -59,6 +65,14 @@ function App() {
     });
   });
 
+  const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setMonitoringId(event.target.value)
+  }
+
+  const onClickStartButton = () => {
+    setIsStarted(true)
+  }
+
   const onClickShareButton = () => {
     setSharingId(short.generate())
     setIsSharingMode(true)
@@ -71,6 +85,8 @@ function App() {
   const onClickCancelButton = () => {
     setIsSharingMode(false);
     setIsMonitoringMode(false);
+    setIsStarted(false);
+    setMonitoringId('');
   }
 
   return (
@@ -93,7 +109,7 @@ function App() {
             isSharingMode ? SharingNavComponent({sharingId, sharingButtonHandler: onClickShareButton, cancelButtonHandler: onClickCancelButton}) : null
           }
           {
-            isMonitoringMode ? MonitoringNavComponent({monitoringId, cancelButtonHandler: onClickCancelButton}) : null
+            isMonitoringMode ? MonitoringNavComponent({monitoringId, isStarted, inputChangeHandler: onChangeInput, startButtonHandler: onClickStartButton, cancelButtonHandler: onClickCancelButton}) : null
           }
         </ul>
       </nav>
