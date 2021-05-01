@@ -24,8 +24,83 @@
 	},
 	"eslintConfig": {
 		"extends": [
-			"react-app",
-			"react-app/jest"
+			"airbnb",
+			"plugin:@typescript-eslint/eslint-recommended",
+			"plugin:@typescript-eslint/recommended",
+			"plugin:react/recommended",
+			"plugin:prettier/recommended"
+		],
+		"plugins": [
+			"react",
+			"@typescript-eslint",
+			"prettier"
+		],
+		"rules": {
+			"react/jsx-filename-extension": 0,
+			"react/jsx-one-expression-per-line": 0,
+			"react/jsx-curly-newline": 0,
+			"react/jsx-wrap-multilines": 0,
+			"no-underscore-dangle": 0,
+			"react/jsx-props-no-spreading": 0,
+			"@typescript-eslint/no-empty-function": 0,
+			"react/prop-types": 0,
+			"react/no-array-index-key": 0,
+			"no-void": 0,
+			"no-unused-expressions": 0,
+			"no-param-reassign": "off",
+			"import/no-extraneous-dependencies": 0,
+			"@typescript-eslint/no-empty-interface": 0,
+			"max-classes-per-file": 0,
+			"class-methods-use-this": 0,
+			"no-useless-constructor": "off",
+			"no-console": "off",
+			"no-use-before-define": "off",
+			"@typescript-eslint/no-use-before-define": [
+				"error"
+			],
+			"import/extensions": [
+				"error",
+				"ignorePackages",
+				{
+					"js": "never",
+					"jsx": "never",
+					"ts": "never",
+					"tsx": "never"
+				}
+			]
+		},
+		"env": {
+			"browser": true
+		},
+		"parser": "@typescript-eslint/parser",
+		"settings": {
+			"import/resolver": {
+				"node": {
+					"paths": [
+						"src"
+					],
+					"extensions": [
+						".js",
+						".jsx",
+						".ts",
+						".tsx"
+					]
+				}
+			}
+		},
+		"overrides": [
+			{
+				"files": [
+					"*.js"
+				],
+				"rules": {
+					"@typescript-eslint/no-var-requires": "off",
+					"import/no-unresolved": "off",
+					"@typescript-eslint/camelcase": "off",
+					"@typescript-eslint/explicit-function-return-type": "off",
+					"@func-names": "off"
+				}
+			}
 		]
 	},
 	"browserslist": {
@@ -49,6 +124,12 @@
 		"@types/node": "^12.0.0",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
-		"@types/styled-components": "^5.1.9"
+		"@types/styled-components": "^5.1.9",
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
+		"eslint-config-airbnb": "^18.2.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.2.1"
 	}
 }
