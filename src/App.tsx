@@ -3,6 +3,9 @@ import './App.css';
 import GoogleMapReact from 'google-map-react';
 import Marker from 'react-spinners/PuffLoader';
 import short from 'short-uuid';
+import useWebSocket from 'react-use-websocket';
+
+const socketUrl = 'wss:test.net';
 
 const MarkerComponent = ({lat, lng}: {lat: number, lng: number}) => <Marker color={'#4A90E2'} loading={true} size={20} />
 
@@ -39,9 +42,28 @@ function App() {
   const [isStarted, setIsStarted] = useState(false)
   const [isSharingMode, setIsSharingMode] = useState(false)
   const [isMonitoringMode, setIsMonitoringMode] = useState(false)
-  
 
+  const {
+    sendMessage,
+    sendJsonMessage,
+    lastMessage,
+    lastJsonMessage,
+    readyState,
+    getWebSocket
+  } = useWebSocket(socketUrl, {
+    onOpen: () => console.log('socket opened'),
+    shouldReconnect: (closeEvent) => true,
+  });
+  
   useEffect(() => {
+    let sendCoordsInterval: NodeJS.Timeout
+    if (isSharingMode) {
+      sendCoordsInterval = setInterval(() => {
+        /*
+          sendMessage 를 할 수 있도록 한다.
+        */
+      }, 1000)
+    }
     const mapInfoElement = document.getElementById('Map-info');
     navigator.geolocation.getCurrentPosition((position) => {
       const [lat, lng] = [
@@ -63,6 +85,10 @@ function App() {
         mapInfoElement.innerHTML = `lat: ${lat}, lng: ${lng}`;
       }
     });
+
+    return () => {
+      clearInterval(sendCoordsInterval)
+    }
   });
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +145,9 @@ function App() {
           center={position}
           defaultZoom={17}
         >
-          <MarkerComponent lat={position.lat} lng={position.lng} />
+          {
+            isMonitoringMode ? <MarkerComponent lat={lastJsonMessage.lat} lng={lastJsonMessage.lng} /> : <MarkerComponent lat={position.lat} lng={position.lng} />
+          }     
         </GoogleMapReact>
       </section>
     </div>
