@@ -6,7 +6,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Front from './page/Front';
 
-const App = (): React.FC => (
+const App: React.FC = () => (
   <Router>
     <Switch>
       <Route path="/">

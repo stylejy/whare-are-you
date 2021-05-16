@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`* 기본 렌더링 테스트 Snapshot 1`] = `
+<div>
+  <header
+    class="sc-bdvvaa jnDQWe"
+  >
+    <title
+      class="sc-gsDJrp gbUJJz"
+    >
+      Header
+    </title>
+  </header>
+</div>
+`;
